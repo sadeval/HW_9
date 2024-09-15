@@ -30,8 +30,7 @@ namespace TrainStationApp
                 context.Database.ExecuteSqlRaw(@"
                     INSERT INTO Stations (Name) VALUES ('Station A'), ('Station B'), ('Station C');
                     INSERT INTO Trains (Model, Age, RouteDuration, StationId) 
-                    VALUES ('Pell 200', 10, 3.5, 1), ('Rock 300', 16, 5.5, 1), ('Pell 400', 5, 6, 2);
-                ");
+                    VALUES ('Pell 200', 10, 3.5, 1), ('Rock 300', 16, 5.5, 1), ('Pell 400', 5, 6, 2);");
                 Console.WriteLine("Данные про станции и поезда успешно добавлены.\n");
 
                 // 2. Поезда, у которых длительность маршрута более 5 часов
@@ -50,8 +49,7 @@ namespace TrainStationApp
                     .FromSqlRaw(@"
                         SELECT s.Id, s.Name, t.Model 
                         FROM Stations s 
-                        LEFT JOIN Trains t ON s.Id = t.StationId
-                    ")
+                        LEFT JOIN Trains t ON s.Id = t.StationId")
                     .Select(x => new StationInfoDto
                     {
                         Id = x.Id,
@@ -74,8 +72,7 @@ namespace TrainStationApp
                         FROM Stations s 
                         JOIN Trains t ON s.Id = t.StationId
                         GROUP BY s.Name 
-                        HAVING COUNT(t.Id) > 3
-                    ")
+                        HAVING COUNT(t.Id) > 3")
                     .Select(s => new BusyStationDto { Name = s.Name })
                     .ToList();
 
@@ -114,8 +111,7 @@ namespace TrainStationApp
                         SELECT DISTINCT s.Id, s.Name
                         FROM Stations s
                         JOIN Trains t ON s.Id = t.StationId
-                        WHERE t.RouteDuration < 4
-                    ")
+                        WHERE t.RouteDuration < 4")
                     .Select(s => new BusyStationDto { Name = s.Name })
                     .ToList();
 
@@ -132,8 +128,7 @@ namespace TrainStationApp
                         SELECT s.Id, s.Name
                         FROM Stations s 
                         LEFT JOIN Trains t ON s.Id = t.StationId
-                        WHERE t.Id IS NULL
-                    ")
+                        WHERE t.Id IS NULL")
                     .Select(s => new BusyStationDto { Name = s.Name })
                     .ToList();
 
